@@ -1,0 +1,29 @@
+# For more information about how to use the settings.yaml,
+# see here: https://lucy.srcentre.com.au/srcproj/articles/project-settings.html#setting-up-settings-yaml
+project:
+  name: 
+  author: jmohib
+
+dependencies:
+  - testdat
+  - tibble
+  - dplyr
+  - tidyr
+  - magrittr
+  - stringr
+  - glue
+  - srcutils
+
+options:
+  java.parameters: "-Xmx10G"
+  scipen: 999
+
+constants:
+  CONSTR: "driver={SQL Server Native Client 11.0};Server=aw-db03.srcentre.local;serverspn=MSSQLsvc/aw-db03.srcentre.local;DATABASE=META;TRUSTED_CONNECTION=YES;"
+  YEAR_YYYY: 2022
+  PROJ_NAME: 
+
+paths:
+  Z_PATH: "Z:/"
+  K_PATH: "K:/"
+  PROJ_PATH: "C:/Users/jmohib/MISC Work/Variable Search Engine/QILT Search Engine"
