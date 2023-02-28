@@ -1,0 +1,163 @@
+.main-header .logo {
+	font-family:  Verdana, Geneva, sans-serif;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+
+   /* main tabbar */
+              .skin-green .navbar-default {
+                                  /*  background-color: #dbf8ff; */
+                                  /* background-color: #367fa9; */
+                                  border-style: solid; border-color: black;
+                                  background-color: transparent;
+
+
+              }
+
+
+     /* main tabbar font */
+               .skin-green .navbar-default .navbar-nav > li > a {
+                                  /* color: #ffffff;  */
+                                  color: #1a1a1a;
+                                  font-weight: bold;
+                                  font-size: 20;
+              }
+
+     /* active tab*/
+              .skin-green .navbar-default .navbar-nav > .active > a{
+                                 /*   background-color: #06bdd0;  for blue version */
+                                 	background-color: #009900;
+                                    color: #ffffff;
+              }
+
+
+     /* main sidebar */
+          .skin-green .main-sidebar {
+                              /*  background-color: #245875; */
+                              background-color: #ced8e4;
+                              border-color:  #9cb0c9;
+          }
+
+      /* main menu font */
+          .skin-blue .sidebar a {
+                              /*  color: #243242; font-size: 18px; font-weight: 600; */
+                              font-size: 18px;
+          }
+
+      /* submenu font */
+          .skin-green .sidebar {
+                                color: #3f5873;
+          }
+
+      /* dropdown font */
+          .main-sidebar .dropdown-menu>li>a {
+                            color: #000000; font-size: 14px;
+          }
+
+
+          .skin-green .sidebar .treeview-menu a {
+          					color: #000000;
+          }
+
+
+
+     /* Sidebar menu icons */
+         .sidebar .sidebar-menu .treeview-menu>li>a>.fa {
+                  display: none;
+          }
+
+
+          #last_update-last_update {
+            color: #A9A9A9;
+          }
+
+          /* skeleton format */
+          .skeleton {
+  display: none;
+}
+
+.shiny-bound-output:empty + .skeleton, .shiny-bound-output.recalculating + .skeleton  {
+  display: block;
+}
+
+.shiny-bound-output.recalculating{
+  display:none;
+}
+
+.shiny-table {
+  width: 100% !important;
+}
+
+.sk-layout {
+    display: flex;
+}
+
+.sk-layout-column {
+    flex-direction: column;
+}
+
+.sk-text-row {
+    height: 2rem;
+    width: 100%;
+    background: #ddd;
+    margin: 0.5rem 0;
+}
+
+.skeleton-item {
+    animation: skeleton-pulse 0.8s linear infinite alternate;
+}
+
+.shiny-output-error-validation {
+        font-weight: bold;
+        font-size: 20px;
+      }
+
+.container-fluid {
+  height: 80px !important;
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 40px !important;
+}
+
+.navbar-nav li a {
+  height: 80px !important;
+}
+
+#img-id{
+  position: absolute;
+  right: 80px;
+  top: -10px;
+  display:inline-block;
+
+}
+
+#txt-id{
+  color: grey;
+  font-size: 30px;
+  font-style: bold;
+  font-family: Verdana, Geneva, sans-serif;}
+
+#warn-id{
+  color: red;
+}
+
+/* To make the progress bar larger and locate in the centre of the page */
+.shiny-notification {
+           height: 100px;
+           width: 800px;
+           position:fixed;
+           top: calc(50% - 50px);
+           left: calc(50% - 400px);
+           font-size: 250%;
+           text-align: center;
+           }
+
+.progress-bar-custom {
+  background-color: #25c484;
+}
+
+.highlight {
+  background-color: yellow;
+}
