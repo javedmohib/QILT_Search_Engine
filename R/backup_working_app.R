@@ -10,38 +10,39 @@ library(bslib)
 
 ui <- fluidPage(
 
-  # theme = bs_theme(version = 4, bootswatch = "minty"),
-
   theme = bs_theme(version = 4, bootswatch = "minty"),
 
-  titlePanel(h3("Files Search Engine")),
+  titlePanel(h3("QILT Projects Search Engine")),
 
-  sidebarLayout(
-    sidebarPanel(
-      selectInput("project", "Select project:",
-                  choices = c("GOS", "SES", "ESS", "GOS-L")),
-      textInput("year", "Enter collection year:", value = "2023"),
-      textInput("subfolder_path", "Enter sub-folder name of file path (separated by commas):", value = "feb"),
-      textInput("file_name", "Enter one or more keywords from file name (separated by commas):", value = "operational"),
-      selectInput("file_extension", "Select file extension:",
-                  c("xlsx", "csv", "txt", "pdf", "docx"), selected = "xlsx"),
-      selectInput("drive", "Drive to search for", choices = c("K", "Z", "Both")),
-      checkboxInput("match_all_name", "Match all keywords in file name:", value = TRUE),
-      checkboxInput("match_all_path", "Match all subfolder paths:", value = FALSE),
-      actionButton("submit", "Submit")
-    ),
+  div(class = "row",
+      div(class = "col-md-2",
+          div(class = "sidebar",
+              selectInput("project", "QILT Project",
+                          choices = c("GOS", "SES", "ESS", "GOS-L")),
+              textInput("year", "Collection Year", value = "2023"),
+              textInput("subfolder_path", "Subfolder name(separated by commas)", value = "FEB"),
+              textInput("file_name", "Keywords in File Name (separated by commas)", value = "Operational"),
+              selectInput("file_extension", "File extension",
+                          c("xlsx", "csv", "txt", "pdf", "docx"), selected = "xlsx"),
+              selectInput("drive", "Drive (K/Z)", choices = c("K", "Z", "Both")),
+              checkboxInput("match_all_name", "Match all keywords in file name", value = TRUE),
+              checkboxInput("match_all_path", "Match all subfolder paths", value = FALSE),
+              actionButton("submit", "Submit")
+          )
+      ),
 
+      div(class = "col-md-10",
+          mainPanel(
+            # Display the list of matching files and sheets
+            selectInput(inputId = "file_path", label = "Select a file:", choices = NULL),
+            selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL),
 
-    mainPanel(
-      # Display the list of matching files and sheets
-      selectInput(inputId = "file_path", label = "Select a file:", choices = NULL),
-      selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL),
-
-      # Button to open the selected sheet
-      # actionButton(inputId = "open_sheet", label = "Open Sheet"),
-      # Render the data table output
-      dataTableOutput("data_table")
-    )
+            # Button to open the selected sheet
+            # actionButton(inputId = "open_sheet", label = "Open Sheet"),
+            # Render the data table output
+            dataTableOutput("data_table")
+          )
+      )
   )
 )
 
