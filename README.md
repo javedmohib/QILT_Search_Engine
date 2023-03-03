@@ -1,10 +1,43 @@
+# QILT Projects Search Engine
 
-# QILT Search Engine
+The QILT Projects Search Engine is an R Shiny app that allows users to search for files in their local system and display the content of a specific tab from the selected file. The app is designed to be user-friendly and customizable, allowing users to search for files based on a range of parameters.
 
-<!-- badges: start -->
-<!-- badges: end -->
+### **Features**
 
-Syntax path: `C:/Users/jmohib/MISC Work/Variable Search Engine/QILT Search Engine`
+-   Select a QILT project to search (GOS, SES, ESS, or GOS-L)
 
-The goal of QILT Search Engine is to ...
+-   Select a collection year
 
+-   Enter keywords to search for in the file name and subfolder path
+
+-   Choose a file extension (xlsx, csv, txt, pdf, or docx)
+
+-   Select a drive to search (K, Z, or Both)
+
+-   Choose whether to match all keywords in the file name and/or subfolder path
+
+-   View a list of matching files and select one to display
+
+-   Select a specific tab from the file to display
+
+-   View the content of the selected tab in a data table
+
+### **Dependencies**
+
+The app requires the following R packages to be installed:
+
+-   openxlsx
+
+-   shiny
+
+-   stringr
+
+-   magrittr
+
+-   dplyr
+
+-   bslib
+
+### **License**
+
+This app is licensed under the MIT License.
