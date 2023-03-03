@@ -47,6 +47,7 @@ ui <- fluidPage(
 )
 
 
+
 server <- function(input, output, session) {
 
   files <- reactive({
@@ -54,8 +55,8 @@ server <- function(input, output, session) {
     project <- input$project
     year <- input$year
     drive <- input$drive
-    subfolder_path <- input$subfolder_path
-    file_name <- input$file_name
+    subfolder_path <- strsplit(input$subfolder_path, ",\\s*")[[1]]
+    file_name <- strsplit(input$file_name, ",\\s*")[[1]]
     file_extension <- input$file_extension
     match_all_name <- input$match_all_name
     match_all_path <- input$match_all_path
@@ -69,6 +70,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$submit, {
     choices <- files()
+    print(choices)
     updateSelectInput(session, "file_path", choices = choices)
   })
 
@@ -102,8 +104,8 @@ server <- function(input, output, session) {
     project <- input$project
     year <- input$year
     drive <- input$drive
-    subfolder_path <- input$subfolder_path
-    file_name <- input$file_name
+    subfolder_path <- strsplit(input$subfolder_path, ",\\s*")[[1]]
+    file_name <- strsplit(input$file_name, ",\\s*")[[1]]
     file_extension <- input$file_extension
     match_all_name <- input$match_all_name
     match_all_path <- input$match_all_path
