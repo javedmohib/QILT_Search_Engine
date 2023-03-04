@@ -1,13 +1,15 @@
 library(openxlsx)
 library(shiny)
 library(stringr)
-# library(stringdist)
 library(magrittr)
 library(dplyr)
-# library(shinythemes)
 library(bslib)
+library(shinyjs)
+library(officer)
+library(docxtools)
 
 ui <- fluidPage(
+  useShinyjs(),
 
   theme = bs_theme(version = 4, bootswatch = "minty"),
 
@@ -43,10 +45,7 @@ ui <- fluidPage(
   )
 )
 
-
-
 server <- function(input, output, session) {
-
   files <- reactive({
     # Retrieve the search parameters from the input fields
     project <- input$project
