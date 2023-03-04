@@ -34,12 +34,10 @@ ui <- fluidPage(
           mainPanel(
             # Display the list of matching files and sheets
             selectInput(inputId = "file_path", label = "Select a file:", choices = NULL),
-            selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL),
-
-            # Button to open the selected sheet
-            # actionButton(inputId = "open_sheet", label = "Open Sheet"),
+            shinyjs::hidden(selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL)),
             # Render the data table output
-            dataTableOutput("data_table")
+            dataTableOutput("data_table"),
+            verbatimTextOutput("text_output")
           )
       )
   )
