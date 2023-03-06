@@ -7,6 +7,7 @@ library(bslib)
 library(shinyjs)
 library(officer)
 library(docxtools)
+library(pdftools)
 
 ui <- fluidPage(
   useShinyjs(),
