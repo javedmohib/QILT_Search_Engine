@@ -79,15 +79,20 @@ sidebar <- dashboardSidebar(
   actionButton("submit", "Submit")
 )
 
+
 body <- dashboardBody(
   fluidRow(
     column(12,
            div(style = "display: flex; justify-content: space-between;",
-               div(style = "flex: 1;",
-                   selectInput(inputId = "file_path", label = "Select a file:", choices = NULL, width = "150%")
+               div(style = "flex: 2.5;",
+                   selectInput(inputId = "file_path", label = "Select a file:", choices = NULL, width = "100%")
                ),
                div(style = "flex: 1;",
-                   shinyjs::hidden(selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL, width = "50%"))
+                   shinyjs::hidden(selectInput(inputId = "sheet_name", label = "Select a sheet:", choices = NULL, width = "100%"))
+               ),
+               div(style = "display: flex: 1; justify-content: flex-end;",
+                   actionButton(inputId = "copy_path_btn", label = "Copy Path"),
+                   actionButton(inputId = "open_file_btn", label = "Open File")
                )
            )
     )
@@ -102,6 +107,7 @@ body <- dashboardBody(
     )
   )
 )
+
 
 
 
@@ -140,6 +146,16 @@ server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$copy_path_btn, {
+
+    clipr::write_clip(input$file_path)
+  })
+
+  observeEvent(input$open_file_btn, {
+
+    shell.exec(input$file_path)
+  })
+
   observeEvent(input$file_path, {
     file_path <- input$file_path
     ext <- tools::file_ext(file_path)
@@ -170,6 +186,14 @@ server <- function(input, output, session) {
 
       })
       shinyjs::hide("sheet_name")
+    } else if (ext %in% ""){
+
+      output$text_output <- renderText({
+
+        print("Please fill keywords and press submit to view the files")
+
+      })
+
     } else {
       # Show a message indicating that the selected file is not supported
       showModal(modalDialog("The selected file is not supported. Please select a file with extension .xlsx, .xlsm, .txt, .csv, .doc, .docx or .pdf."))
