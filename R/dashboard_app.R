@@ -114,6 +114,7 @@ body <- dashboardBody(
 ui <- dashboardPage(header, sidebar, body)
 
 server <- function(input, output, session) {
+  useShinyjs()
   files <- reactive({
     # Retrieve the search parameters from the input fields
     project <- input$project
