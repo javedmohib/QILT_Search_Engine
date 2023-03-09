@@ -18,14 +18,14 @@ sidebar <- dashboardSidebar(
   textInput("subfolder_path", "Subfolder name(separated by commas)", value = "FEB"),
   textInput("file_name", "Keywords in File Name (separated by commas)", value = "Operational"),
   selectInput("file_extension", "File extension",
-              c("xlsx", "csv", "txt", "pdf", "docx"), selected = "xlsx"),
+              c("xlsx", "csv", "txt", "pdf", "docx", "R", "All of above"), selected = "xlsx"),
   selectInput("drive", "Drive (K/Z)", choices = c("K", "Z", "Both")),
   checkboxInput("match_all_name", "Match all keywords in file name", value = TRUE),
   checkboxInput("match_all_path", "Match all subfolder paths", value = FALSE),
   actionButton("submit", "Submit")
 )
 
-library(shinyjs)
+
 body <- dashboardBody(
   shinyjs::useShinyjs(),
 
@@ -50,18 +50,14 @@ body <- dashboardBody(
   fluidRow(
     column(12,
            tabBox(id = "data_table", height = "700px", width = NULL,
-                  tabPanel("Table", dataTableOutput("table_output")),
-                  tabPanel("Text", verbatimTextOutput("text_output")),
+                  tabPanel("Table", shinyjs::hidden(dataTableOutput("table_output"))),
+                  tabPanel("Text", shinyjs::hidden(verbatimTextOutput("text_output"))),
                   tabPanel("About",  shiny::includeMarkdown("README.md"))
            )
     )
   )
 
 )
-
-
-
-
 
 ui <- dashboardPage(header, sidebar, body)
 
@@ -74,7 +70,7 @@ server <- shinyServer(function(input, output, session) {
     drive <- input$drive
     subfolder_path <- strsplit(input$subfolder_path, ",\\s*")[[1]]
     file_name <- strsplit(input$file_name, ",\\s*")[[1]]
-    file_extension <- input$file_extension
+    file_extension <- ifelse(input$file_extension %in% "All of above", "", input$file_extension)
     match_all_name <- input$match_all_name
     match_all_path <- input$match_all_path
 
@@ -125,51 +121,6 @@ server <- shinyServer(function(input, output, session) {
   })
 
 
-  # observeEvent(input$file_path, {
-  #   file_path <- input$file_path
-  #   ext <- tools::file_ext(file_path)
-  #
-  #   if (ext %in% c("xlsx", "xlsm")) {
-  #     sheet_names <- getSheetNames(file_path)
-  #     updateSelectInput(session, "sheet_name", choices = sheet_names)
-  #     shinyjs::show("sheet_name")
-  #   } else if (ext %in% c("txt", "csv")) {
-  #     # Display the content of the file
-  #     output$table_output <- renderDataTable({
-  #       read.table(file_path, header = TRUE, sep = ",", stringsAsFactors = FALSE)
-  #     })
-  #     shinyjs::hide("sheet_name")
-  #   } else if (ext == "pdf") {
-  #     # Display the content of the file
-  #     output$text_output <- renderText({
-  #       pdftools::pdf_text(file_path)
-  #     })
-  #     shinyjs::hide("sheet_name")
-  #   } else if (ext %in% c("doc", "docx")) {
-  #     # Display the content of the file
-  #     output$text_output <- renderText({
-  #
-  #       doc_text <- read_docx(file_path)
-  #       text <- docx_summary(doc_text)
-  #       print(text)
-  #
-  #     })
-  #     shinyjs::hide("sheet_name")
-  #   } else if (ext %in% ""){
-  #
-  #     output$text_output <- renderText({
-  #
-  #       print("Text is displayed here only when a .doc or .pdf file is selected")
-  #
-  #     })
-  #
-  #   } else {
-  #     # Show a message indicating that the selected file is not supported
-  #     showModal(modalDialog("The selected file is not supported. Please select a file with extension .xlsx, .xlsm, .txt, .csv, .doc, .docx or .pdf."))
-  #     shinyjs::hide("sheet_name")
-  #   }
-  # })
-
   observeEvent(input$file_path, {
     file_path <- input$file_path
     ext <- tools::file_ext(file_path)
@@ -180,6 +131,7 @@ server <- shinyServer(function(input, output, session) {
       shinyjs::show("sheet_name")
       shinyjs::show("table_tab")
       shinyjs::hide("text_tab")
+
     } else if (ext %in% c("txt", "csv")) {
       # Display the content of the file
       output$table_output <- renderDataTable({
@@ -188,6 +140,7 @@ server <- shinyServer(function(input, output, session) {
       shinyjs::hide("sheet_name")
       shinyjs::show("table_tab")
       shinyjs::hide("text_tab")
+
     } else if (ext == "pdf") {
       # Display the content of the file
       output$text_output <- renderText({
@@ -196,6 +149,7 @@ server <- shinyServer(function(input, output, session) {
       shinyjs::hide("sheet_name")
       shinyjs::hide("table_tab")
       shinyjs::show("text_tab")
+
     } else if (ext %in% c("doc", "docx")) {
       # Display the content of the file
       output$text_output <- renderText({
@@ -206,6 +160,16 @@ server <- shinyServer(function(input, output, session) {
       shinyjs::hide("sheet_name")
       shinyjs::hide("table_tab")
       shinyjs::show("text_tab")
+
+    } else if (ext %in% c("R", "rmd")) {
+      output$text_output <- renderPrint({
+        script_content <- readLines(file_path)
+        cat(paste(script_content, collapse = "\n"))
+      })
+      shinyjs::hide("sheet_name")
+      shinyjs::hide("table_tab")
+      shinyjs::show("text_tab")
+
     } else if (ext %in% "") {
       output$text_output <- renderText({
         print("Text is displayed here only when a .doc or .pdf file is selected")
@@ -213,6 +177,7 @@ server <- shinyServer(function(input, output, session) {
       shinyjs::hide("sheet_name")
       shinyjs::hide("table_tab")
       shinyjs::show("text_tab")
+
     } else {
       # Show a message indicating that the selected file is not supported
       showModal(modalDialog("The selected file is not supported. Please select a file with extension .xlsx, .xlsm, .txt, .csv, .doc, .docx or .pdf."))
