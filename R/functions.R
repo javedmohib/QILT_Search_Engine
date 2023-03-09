@@ -48,11 +48,13 @@ find_files <- function (project, year, drive = "", subfolder_path = "",
   matching_files <- character(0)
   for (folder_path in folder_paths) {
 
-    all_files <- dir(folder_path, recursive = TRUE)
+    all_files <- list.files(folder_path, recursive = TRUE)
 
-    all_files <- all_files[!grepl("^[\\.\\$~]", basename(all_files)) &
-                             grepl(paste0(".", file_extension), all_files, ignore.case = TRUE) &
-                             !grepl("zip$", all_files)]
+    all_files <- all_files[!grepl("^[\\.\\$~]", basename(all_files)) & # remove the files that start with "., ~, $"  (i.e. hidden files)
+                             grepl(file_extension, tools::file_ext(all_files), ignore.case = TRUE) & # select only those with desired extension
+                             !grepl("zip$", all_files)] # to remove zip files
+
+
     for (file in all_files) {
       if (((match_all_name && all(sapply(file_name, function(arg) grepl(arg, basename(file), ignore.case = TRUE)))) ||
            (!match_all_name && any(sapply(file_name, function(arg) grepl(arg, basename(file), ignore.case = TRUE)))))) {
