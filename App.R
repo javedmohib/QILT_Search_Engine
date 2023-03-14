@@ -50,11 +50,13 @@ body <- dashboardBody(
 
   fluidRow(
     column(12,
-           tabBox(id = "data_table", height = "700px", width = NULL,
-                  tabPanel("Table", shinyjs::hidden(dataTableOutput("table_output"))),
-                  tabPanel("Text", shinyjs::hidden(verbatimTextOutput("text_output"))),
-                  tabPanel("About",  shiny::includeMarkdown("README.md"))
+           tabsetPanel(type = "tabs", id = "data_table", #selected = 3, # height = "700px", width = NULL,
+                       tabPanel("File Content", dataTableOutput("table_output"), value=1),
+                       tabPanel("File Content", verbatimTextOutput("text_output"), value = 2),
+                       tabPanel("About",  shiny::includeMarkdown("README.md"), value = 3),
+
            )
+
     )
   )
 
