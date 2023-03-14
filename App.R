@@ -16,7 +16,7 @@ sidebar <- dashboardSidebar(
               choices = c("GOS", "SES", "ESS", "GOS-L")),
   textInput("year", "Collection Year", value = "2023"),
   textInput("subfolder_path", "Subfolder name(separated by commas)", value = "FEB"),
-  textInput("file_name", "Keywords in File Name (separated by commas)", value = "Operational"),
+  textInput("file_name", "Keywords in File Name (separated by commas)", value = "Spec"),
   selectInput("file_extension", "File extension",
               c("xlsx", "csv", "txt", "pdf", "docx", "R", "All of above"), selected = "xlsx"),
   selectInput("drive", "Drive (K/Z)", choices = c("K", "Z", "Both")),
@@ -65,7 +65,10 @@ body <- dashboardBody(
 ui <- dashboardPage(header, sidebar, body)
 
 server <- shinyServer(function(input, output, session) {
+
   useShinyjs()
+
+
   files <- reactive({
     # Retrieve the search parameters from the input fields
     project <- input$project
@@ -132,8 +135,8 @@ server <- shinyServer(function(input, output, session) {
       sheet_names <- getSheetNames(file_path)
       updateSelectInput(session, "sheet_name", choices = sheet_names)
       shinyjs::show("sheet_name")
-      shinyjs::show("table_tab")
-      shinyjs::hide("text_tab")
+      showTab("data_table", "1")
+      hideTab("data_table", "2")
 
     } else if (ext %in% c("txt", "csv")) {
       # Display the content of the file
@@ -141,8 +144,8 @@ server <- shinyServer(function(input, output, session) {
         read.table(file_path, header = TRUE, sep = ",", stringsAsFactors = FALSE)
       })
       shinyjs::hide("sheet_name")
-      shinyjs::show("table_tab")
-      shinyjs::hide("text_tab")
+      showTab("data_table", "1")
+      hideTab("data_table", "2")
 
     } else if (ext == "pdf") {
       # Display the content of the file
@@ -150,8 +153,8 @@ server <- shinyServer(function(input, output, session) {
         pdftools::pdf_text(file_path)
       })
       shinyjs::hide("sheet_name")
-      shinyjs::hide("table_tab")
-      shinyjs::show("text_tab")
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
 
     } else if (ext %in% c("doc", "docx")) {
       # Display the content of the file
@@ -161,8 +164,8 @@ server <- shinyServer(function(input, output, session) {
         return(paste("<pre>", text, "</pre>", sep = ""))
       })
       shinyjs::hide("sheet_name")
-      shinyjs::hide("table_tab")
-      shinyjs::show("text_tab")
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
 
     } else if (ext %in% c("R", "rmd")) {
       output$text_output <- renderPrint({
@@ -170,23 +173,23 @@ server <- shinyServer(function(input, output, session) {
         cat(paste(script_content, collapse = "\n"))
       })
       shinyjs::hide("sheet_name")
-      shinyjs::hide("table_tab")
-      shinyjs::show("text_tab")
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
 
     } else if (ext %in% "") {
       output$text_output <- renderText({
-        print("Text is displayed here only when a .doc or .pdf file is selected")
+        print("Please input the search conditions and press enter")
       })
       shinyjs::hide("sheet_name")
-      shinyjs::hide("table_tab")
-      shinyjs::show("text_tab")
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
 
     } else {
       # Show a message indicating that the selected file is not supported
       showModal(modalDialog("The selected file is not supported. Please select a file with extension .xlsx, .xlsm, .txt, .csv, .doc, .docx or .pdf."))
       shinyjs::hide("sheet_name")
-      shinyjs::hide("table_tab")
-      shinyjs::hide("text_tab")
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
     }
   })
 
@@ -199,6 +202,7 @@ server <- shinyServer(function(input, output, session) {
       # Display the content of the selected sheet
       output$table_output <- renderDataTable({
         read.xlsx(file_path, sheet = sheet_name, colNames = TRUE, rowNames = FALSE)
+
       })
     }
   })
