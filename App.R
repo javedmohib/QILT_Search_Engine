@@ -22,6 +22,7 @@ sidebar <- dashboardSidebar(
   selectInput("drive", "Drive (K/Z)", choices = c("K", "Z", "Both")),
   checkboxInput("match_all_name", "Match all keywords in file name", value = TRUE),
   checkboxInput("match_all_path", "Match all subfolder paths", value = FALSE),
+  checkboxInput("open_tinnR", "Open R script in Tinn-R editor", value = FALSE),
   actionButton("submit", "Submit")
 )
 
@@ -112,7 +113,7 @@ server <- shinyServer(function(input, output, session) {
 
   observeEvent(input$open_file_btn, {
 
-    shell.exec(input$file_path)
+    open_file(input$file_path, input$open_tinnR)
   })
 
   observeEvent(input$open_folder_btn, {
