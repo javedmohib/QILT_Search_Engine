@@ -82,3 +82,39 @@ find_files <- function (project, year, drive = "", subfolder_path = "",
 
 }
 
+
+
+#' To open .Rproj when search file is an R script
+#'
+#' @param file_path Path to the file to open
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+open_file <- function(file_path, open_tinnR) {
+  ext <- tools::file_ext(file_path)
+
+  if (!open_tinnR & ext == "R") {
+    dir_path <- dirname(file_path)
+
+    while (dir_path != "") {
+      file_list <- list.files(dir_path, pattern = "\\.Rproj$", full.names = TRUE)
+
+      if (length(file_list) > 0) {
+        shell.exec(file_list)
+        return(invisible(NULL))
+      }
+
+      dir_path <- dirname(dir_path)
+    }
+
+    shell.exec(file_path)
+  } else {
+    shell.exec(file_path)
+  }
+}
+
+
+
