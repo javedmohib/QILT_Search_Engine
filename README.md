@@ -1,6 +1,6 @@
 # QILT Search Engine
 
-The QILT Search Engine is an R Shiny app that allows users to search for files in their local system and displays the content of the file. It also allows the user to copy the file path, oen the file or open the directory where the file is stored. The app is designed to be user-friendly and customizable, allowing users to search for files based on a range of parameters.
+The QILT Search Engine is an R Shiny app that allows users to search for files in their local system and displays the content of the file. It also allows the user to copy the file path, open the file or open the directory where the file is stored. The app also allows user to open R scripts either in Tinn-R editor or directly .Rproj from working directory. The app is designed to be user-friendly and customizable, allowing users to search for files based on a range of parameters.
 
 ### **Features**
 
@@ -8,19 +8,20 @@ The QILT Search Engine is an R Shiny app that allows users to search for files i
 
 -   Enter a collection year 
 
--   Enter keywords to search for in the file name and subfolder path
+-   Enter keywords to search for in the file name and subfolder path - The app splits words for blank, _ or -. So if file name is sample_spec, feed two words separated by space like sample, spec
 
--   Choose a file extension (xlsx, csv, txt, pdf, or docx)
+-   Choose a file extension (xlsx, csv, txt, pdf, docx, R or All of Above)
 
 -   Select a drive to search (K, Z, or Both)
 
--   Choose whether to match all keywords in the file name and/or subfolder path
+-   Choose whether to match all keywords in the file name and/or subfolder path - If TRUE only gives the files that have all the strings given in file name and/or file folder
 
--   View a list of matching files and select one to display
+-   Open R script in Tinn-R editor - Select the check box if you want to open R files in Tinn-R editor
 
--   Select a specific tab from the file to display
+-   Submit - Press the button to View a list of matching files 
 
--   View the content of the selected tab in a data table
+-   Select a specific file from the drop down list to display
+
 
 ### **Dependencies**
 
