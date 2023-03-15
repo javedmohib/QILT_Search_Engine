@@ -96,7 +96,10 @@ server <- shinyServer(function(input, output, session) {
     if (length(choices) == 0) {
       output$text_output <- renderText({
         "No file found based on search inputs provided"
+
       })
+      showTab("data_table", "2")
+      hideTab("data_table", "1")
     } else {
       updateSelectInput(session, "file_path", choices = choices)
       # Check if the selected file is an xlsx file and show/hide the sheet_name input accordingly
@@ -134,6 +137,13 @@ server <- shinyServer(function(input, output, session) {
     if (ext %in% c("xlsx", "xlsm")) {
       sheet_names <- getSheetNames(file_path)
       updateSelectInput(session, "sheet_name", choices = sheet_names)
+      if (!is.null(input$sheet_name) && input$sheet_name != "") {
+        # Display the content of the selected sheet
+        output$table_output <- renderDataTable({
+          read.xlsx(file_path, sheet = input$sheet_name, colNames = TRUE, rowNames = FALSE)
+
+        })
+      }
       shinyjs::show("sheet_name")
       showTab("data_table", "1")
       hideTab("data_table", "2")
